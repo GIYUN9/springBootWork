@@ -21,5 +21,4 @@ public class MemberEntity {
 
     @Column(name = "phone", nullable = true, length = 11)
     private String phone;
-
 }

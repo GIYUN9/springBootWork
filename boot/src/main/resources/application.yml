@@ -16,8 +16,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create #DDL(create, alter, drop)정의시
-
+      ddl-auto: create #DDL(create, alter, drop)정의시 DB의 고유기능을 사용할 것인가
 
 mybatis:
   mapper-locations:

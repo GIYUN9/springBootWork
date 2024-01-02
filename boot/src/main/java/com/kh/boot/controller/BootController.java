@@ -27,14 +27,14 @@ public class BootController {
     }
 
     @GetMapping("/member")
-    public String getMember(@RequestParam(value = "memberKey", defaultValue = "111")String memberKey,
+    public String getMember(@RequestParam(value = "memberKey", defaultValue = "111") String memberKey,
                             @RequestParam("year") int year){
         log.info("memberKey : {}", memberKey);
         log.info("year : {}", year);
         return "ok";
     }
 
-    @GetMapping("/commpany/{id}")
+    @GetMapping("/company/{id}")
     public String getCompany(@PathVariable("id") String id){
         log.info("id : {}", id);
         return "ok";
@@ -42,13 +42,13 @@ public class BootController {
 
     @PostMapping("/company")
     public String registerCompany(@RequestBody String company){
-        log.info("id : {}", company);
+
         return "ok";
     }
 
     @PostMapping("/product")
     public String registerProduct(@RequestBody ProductDto productDto){
-        log.info("id : {}", productDto);
+
 
         boolean p = bootService.registerProduct(productDto);
 
@@ -57,11 +57,12 @@ public class BootController {
         return "ok";
     }
 
-    @PostMapping("/product/{id}")
+    @GetMapping("/product/{id}")
     public ProductDto getItem(@PathVariable("id") String id) {
         log.info("id : {}", id);
 
         ProductDto productDto = bootService.getProductById(id);
         return productDto;
     }
+
 }

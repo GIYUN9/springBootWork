@@ -1,13 +1,18 @@
 package aspect;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 @Aspect
 @Component
+@Slf4j
 public class LoggingAOP {
 
     //특정한 메서드나 패키지등의 join point
@@ -15,9 +20,43 @@ public class LoggingAOP {
     @Pointcut("execution(* com.kh.boot.controller..*.*(..))")
     private void cut(){};
 
+
     //cut메서드가 실행되는 지점 이전에 before() 메서드 실행
+    //joinPoint : pointcut지점에 대한 정보가 들어있음
     @Before("cut()")
     public void before(JoinPoint joinPoint){
-        
+        //실행되는 메서드의 이름을 가져오기
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Method method = methodSignature.getMethod();
+
+
+        log.info("======================== START ========================");
+        log.info("======================== API Controller ========================");
+        log.info("Information            : " + methodSignature);
+        log.info("Information            : " + method);
+        log.info("Parameter              : " + Arrays.toString(args));
+    }
+
+    @AfterReturning(value = "cut()", returning = "obj")
+    public void afterReturn(JoinPoint joinPoint, Object obj){
+        log.info("======================== END ========================");
+        log.info("Object            : "+ obj);
+    }
+
+    //대상 메서드를 감싸서 메서드 호출 전후에 Advice를 실행할 수 있다
+    @Around("cut()")
+    public Object displayWhileLogInfo(ProceedingJoinPoint pjoinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+
+        Object result = pjoinPoint.proceed();
+
+        long end = System.currentTimeMillis();
+
+        long pTime = end - start;
+
+        log.info("---------------------------------");
+        log.info("Information            : " + pjoinPoint.getSignature());
+        log.info("Processing Time        : " + pTime + "m/s");
+
     }
 }

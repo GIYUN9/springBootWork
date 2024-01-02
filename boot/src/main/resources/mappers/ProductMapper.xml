@@ -12,7 +12,7 @@
             ID = #{id}
     </select>
     <insert id="registerProduct" parameterType="hashmap">
-        INSERT INTO PRODUCT(ID, NAME)
-        VALUES (#{id}, #{name})
+        INSERT INTO PRODUCT (ID, NAME)
+        VALUES ( #{id}, #{name} )
     </insert>
 </mapper>

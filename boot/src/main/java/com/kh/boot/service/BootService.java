@@ -9,18 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-
+import java.util.Objects;
 
 @Slf4j
 @Service
 public class BootService {
 
     @Autowired
-    BootMapper bootMapper;
+    private BootMapper bootMapper;
 
     @Autowired
-    ProductRepository productRepository;
-    
+    private ProductRepository productRepository;
+
     public ProductDto getProductById(String id){
 
 //        HashMap<String, Object> memberMap = new HashMap<>();
@@ -33,21 +33,21 @@ public class BootService {
 //            productDto.setName((String) res.get("NAME"));
 //            return productDto;
 //        }
-//
+
 //        return null;
 
 
         ProductEntity productEntity = productRepository.findById(id).get();
+
         if (productEntity != null) {
-            ProductDto productDto = new ProductDto();
-            productDto.setId(productEntity.getId());
-            productDto.setName(productEntity.getName());
+            ProductDto productDto = productEntity.toDTO();
             return productDto;
         }
+
         return null;
     }
 
-    public boolean registerProduct(ProductDto productDto){
+    public boolean registerProduct(ProductDto productDto) {
 
 //        HashMap<String, Object> paramMap = new HashMap<>();
 //        paramMap.put("id", productDto.getId());
@@ -59,7 +59,7 @@ public class BootService {
 
         ProductEntity productEntity = new ProductEntity();
         productEntity.setId(productDto.getId());
-        productEntity.setName(productEntity.getName());
+        productEntity.setName(productDto.getName());
 
         productRepository.save(productEntity);
 
